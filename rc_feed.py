@@ -16,7 +16,7 @@ from json_feed_data import JsonFeedTopLevel, JsonFeedItem
 POLL_SEC = 1
 LONG_TIMEOUT_SEC = 10
 SHORT_TIMEOUT_SEC = 3
-FEED_ITEM_LIMIT = 10
+FEED_ITEM_LIMIT = 22
 
 BASE_URL = 'https://secure.royalcaribbean.com/cruiseplanner/'
 SEARCH_ENDPOINT = 'api/browseCatalog/'
