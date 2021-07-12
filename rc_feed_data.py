@@ -24,6 +24,7 @@ catalog_data.append(DEFAULT_CATEGORY)
 
 category_list = [category.code for category in catalog_data]
 
+
 def get_matching_category(query):
     return next((category_obj for category_obj in catalog_data if query == category_obj.code), DEFAULT_CATEGORY)
 
@@ -47,9 +48,13 @@ class _BaseQuery():
     def validate_query(self):
         if not self.query:
             self.query = DEFAULT_CATEGORY.code
-        if not (self.query in category_list):
-            self.status.errors.append(f"Invalid query, must be one of the following: " + ', '.join(category_list))
-        self.category_obj = get_matching_category(self.query)
+
+        query_clean = self.query.lower().strip()
+
+        if not (query_clean in category_list):
+            self.status.errors.append(
+                f"Invalid query, must be one of the following: " + ', '.join(category_list))
+        self.category_obj = get_matching_category(query_clean)
         self.category = self.category_obj.id
 
 

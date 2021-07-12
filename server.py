@@ -23,7 +23,7 @@ def process_query():
     query = request.args.get('query')
 
     search_query = RcSearchQuery(
-        query=query.lower().strip(),
+        query=query,
         status=QueryStatus(errors=[])
     )
 
