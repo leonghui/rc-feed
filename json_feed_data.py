@@ -19,8 +19,7 @@ class JsonFeedItem():
     content_html: str = None
     image: str = None
     date_published: str = None
-    author: JsonFeedAuthor = None  # deprecated
-    authors: List[JsonFeedAuthor] = None
+    authors: List[JsonFeedAuthor] = field(default_factory=list)
 
 
 @dataclass
@@ -31,5 +30,4 @@ class JsonFeedTopLevel():
     home_page_url: str = None
     description: str = None
     favicon: str = None
-    author: JsonFeedAuthor = None  # deprecated
-    authors: List[JsonFeedAuthor] = None
+    authors: List[JsonFeedAuthor] = field(default_factory=list)
