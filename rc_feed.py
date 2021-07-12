@@ -232,6 +232,8 @@ def get_search_results(search_query, logger):
         if item_thumbnail_url:
             content_body_list.insert(0, item_thumbnail_html)
 
+        timestamp = datetime.now().timestamp()
+
         content_body = ''.join(content_body_list)
 
         sanitized_html = bleach.clean(
@@ -242,7 +244,7 @@ def get_search_results(search_query, logger):
             url=item_url,
             title=f"[{item_price}] {item_title}",
             content_html=sanitized_html,
-            date_published=datetime.now().isoformat('T')
+            date_published=datetime.utcfromtimestamp(timestamp).isoformat('T')
         )
 
         json_feed.items.append(feed_item)
