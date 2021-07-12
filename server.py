@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, abort
 
-from rc_feed import get_search_results
+from rc_feed import get_search_results, process_logout
 from rc_feed_data import RcSearchQuery, QueryStatus
 
 
@@ -28,6 +28,11 @@ def process_query():
     )
 
     return generate_response(search_query)
+
+# trigger logout to unlock booking system
+@app.route('/logout', methods=['GET'])
+def logout():
+    process_logout(app.logger)
 
 
 if __name__ == '__main__':

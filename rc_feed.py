@@ -71,6 +71,7 @@ def process_login(logger):
 
     # go to accounts page
     driver.get(ACCOUNT_URL + SIGNIN_ENDPOINT)
+    logger.debug('Webdriver - go to accounts page')
 
     # check for accessToken cookie
     if not (driver.get_cookie('accessToken')):
@@ -109,13 +110,14 @@ def process_login(logger):
         logger.info('Session cookie set')
 
     except TimeoutException:
-        # try to logout of booking system
-        driver.get(BASE_URL + LOGOUT_ENDPOINT)
-
         # abort if locked out of booking system (for 15 mins)
         logger.error('Webdriver - failed to obtain session cookie')
         abort(429, description='Rate limit hit, try again later')
 
+def process_logout(logger):
+    # try to logout of booking system
+    driver.get(BASE_URL + LOGOUT_ENDPOINT)
+    logger.debug('Webdriver - go to logout')
 
 def process_response(response, query_object, logger):
 
