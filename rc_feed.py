@@ -1,5 +1,5 @@
 from datetime import datetime
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 from flask import abort
 from requests import Session
 from selenium import webdriver
@@ -114,10 +114,12 @@ def process_login(logger):
         logger.error('Webdriver - failed to obtain session cookie')
         abort(429, description='Rate limit hit, try again later')
 
+
 def process_logout(logger):
     # try to logout of booking system
     driver.get(BASE_URL + LOGOUT_ENDPOINT)
     logger.debug('Webdriver - go to logout')
+
 
 def process_response(response, query_object, logger):
 
@@ -225,11 +227,16 @@ def get_search_results(search_query, logger):
         item_content_html = f"<p>{item_desc}</p>"
 
         item_thumbnail_url = get_item_thumbnail(tile)
-        item_thumbnail_html = f'<img src=\"{item_thumbnail_url}\" />'
+
+        # remove query string from thumbnail url
+        item_thumbnail_url_cleaned = urljoin(
+            item_thumbnail_url, urlparse(item_thumbnail_url).path)
+
+        item_thumbnail_html = f'<img src=\"{item_thumbnail_url_cleaned}\" />'
 
         content_body_list = [item_content_html]
 
-        if item_thumbnail_url:
+        if item_thumbnail_url_cleaned:
             content_body_list.insert(0, item_thumbnail_html)
 
         timestamp = datetime.now().timestamp()
