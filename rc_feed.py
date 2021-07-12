@@ -59,6 +59,16 @@ longWait = WebDriverWait(driver, LONG_TIMEOUT_SEC, poll_frequency=POLL_SEC)
 
 
 def process_login(logger):
+
+    usernameSecret = get_docker_secret('rc_username')
+    passwordSecret = get_docker_secret('rc_password')
+
+    try:
+        assert usernameSecret and passwordSecret
+    except AssertionError:
+        logger.error(f'Webdriver - missing credentials')
+        abort(500, description='Login credentials not configured')
+
     # go to accounts page
     driver.get(ACCOUNT_URL + SIGNIN_ENDPOINT)
 
@@ -70,8 +80,8 @@ def process_login(logger):
             lambda d: d.find_element_by_id('mat-input-1'))
 
         # login with docker secrets
-        username.send_keys(get_docker_secret('rc_username'))
-        password.send_keys(get_docker_secret('rc_password'))
+        username.send_keys(usernameSecret)
+        password.send_keys(passwordSecret)
         logger.debug('Webdriver - entered credentials')
 
         rememberBox = shortWait.until(
