@@ -11,8 +11,7 @@ from get_docker_secret import get_docker_secret
 import bleach
 import os
 
-from rc_feed_data import RcSearchQuery
-from json_feed_data import JsonFeedTopLevel, JsonFeedItem, JsonFeedAuthor
+from json_feed_data import JsonFeedTopLevel, JsonFeedItem
 
 POLL_SEC = 1
 LONG_TIMEOUT_SEC = 10
