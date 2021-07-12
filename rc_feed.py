@@ -175,8 +175,7 @@ def get_top_level_feed(base_url, query_object):
     json_feed = JsonFeedTopLevel(
         items=[],
         title=' - '.join(title_strings),
-        home_page_url=base_url + BROWSE_ENDPOINT + query_object.category,
-        authors=[]
+        home_page_url=base_url + BROWSE_ENDPOINT + query_object.category
     )
 
     return json_feed
@@ -243,8 +242,7 @@ def get_search_results(search_query, logger):
             url=item_url,
             title=f"[{item_price}] {item_title}",
             content_html=sanitized_html,
-            date_published=datetime.now().isoformat('T'),
-            authors=[],
+            date_published=datetime.now().isoformat('T')
         )
 
         json_feed.items.append(feed_item)
