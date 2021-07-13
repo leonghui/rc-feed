@@ -15,7 +15,7 @@ from json_feed_data import JsonFeedTopLevel, JsonFeedItem
 
 POLL_SEC = 1
 LONG_TIMEOUT_SEC = 10
-SHORT_TIMEOUT_SEC = 3
+SHORT_TIMEOUT_SEC = 5
 FEED_ITEM_LIMIT = 22
 
 BASE_URL = 'https://secure.royalcaribbean.com/cruiseplanner/'
@@ -65,6 +65,7 @@ def process_login(logger):
 
     try:
         assert usernameSecret and passwordSecret
+
     except AssertionError:
         logger.error(f'Webdriver - missing credentials')
         abort(500, description='Login credentials not configured')
@@ -73,9 +74,15 @@ def process_login(logger):
     driver.get(ACCOUNT_URL + SIGNIN_ENDPOINT)
     logger.debug('Webdriver - go to accounts page')
 
-    # check for accessToken cookie
-    if not (driver.get_cookie('accessToken')):
-        username = longWait.until(
+    # look for "Plan my cruise" button
+    try:
+        shortWait.until(
+            lambda d: d.find_element_by_id('cruisePlannerButton'))
+
+    except TimeoutException:
+        # otherwise look for login form
+        logger.debug('Webdriver - attempting login')
+        username = shortWait.until(
             lambda d: d.find_element_by_id('mat-input-0'))
         password = shortWait.until(
             lambda d: d.find_element_by_id('mat-input-1'))
