@@ -76,7 +76,7 @@ def process_login(logger):
 
     # look for "Plan my cruise" button
     try:
-        shortWait.until(
+        longWait.until(
             lambda d: d.find_element_by_id('cruisePlannerButton'))
 
     except TimeoutException:
