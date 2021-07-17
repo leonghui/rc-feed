@@ -77,7 +77,7 @@ def process_login(logger):
     # look for "Plan my cruise" button
     try:
         longWait.until(
-            lambda d: d.find_element_by_id('cruisePlannerButton'))
+            lambda d: d.find_element_by_id('cruisePlannerButton-0-0'))
 
     except TimeoutException:
         # otherwise look for login form
@@ -104,7 +104,7 @@ def process_login(logger):
 
     # click "Plan my cruise" to login into booking system
     planButton = longWait.until(
-        lambda d: d.find_element_by_id('cruisePlannerButton'))
+        lambda d: d.find_element_by_id('cruisePlannerButton-0-0'))
     planButton.click()
     logger.debug('Webdriver - clicked "Plan my cruise"')
 
