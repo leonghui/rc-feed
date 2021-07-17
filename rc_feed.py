@@ -46,16 +46,29 @@ session.headers.update(
     }
 )
 
-# run as headless
-opts = FirefoxOptions()
-opts.add_argument("--headless")
 
-# discard geckodriver log to avoid file permission issues
-driver = webdriver.Firefox(firefox_options=opts, service_log_path=os.devnull)
+def initiate_webdriver(app):
+    global shortWait
+    global longWait
+    global driver
 
-# use longer timeout when loading pages
-shortWait = WebDriverWait(driver, SHORT_TIMEOUT_SEC, poll_frequency=POLL_SEC)
-longWait = WebDriverWait(driver, LONG_TIMEOUT_SEC, poll_frequency=POLL_SEC)
+    # run as headless
+    opts = FirefoxOptions()
+    opts.add_argument("--headless")
+
+    logPath = os.devnull
+
+    if (app.debug):
+        opts.log.level = 'trace'
+        logPath = '/var/log/geckodriver.log'
+
+    # discard geckodriver log to avoid file permission issues
+    driver = webdriver.Firefox(firefox_options=opts, service_log_path=logPath)
+
+    # use longer timeout when loading pages
+    shortWait = WebDriverWait(
+        driver, SHORT_TIMEOUT_SEC, poll_frequency=POLL_SEC)
+    longWait = WebDriverWait(driver, LONG_TIMEOUT_SEC, poll_frequency=POLL_SEC)
 
 
 def process_login(logger):

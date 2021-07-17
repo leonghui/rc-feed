@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify, abort
 from dataclasses import asdict
 
-from rc_feed import get_search_results, process_logout
+from rc_feed import get_search_results, process_logout, initiate_webdriver
 from rc_feed_data import RcSearchQuery, QueryStatus
 
 
 app = Flask(__name__)
 app.config.update({'JSONIFY_MIMETYPE': 'application/feed+json'})
+
+
+initiate_webdriver(app)
+
 
 # remove None and empty elements
 # adapted from https://stackoverflow.com/a/60124334
@@ -44,6 +48,7 @@ def process_query():
     )
 
     return generate_response(search_query)
+
 
 # trigger logout to unlock booking system
 @app.route('/logout', methods=['GET'])
